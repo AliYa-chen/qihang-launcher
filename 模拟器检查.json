@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "device": "emulator-5554",
+  "android": "16",
+  "api": "36",
+  "checks": [
+    "Cold home uses left-facing tablet camera; no reset/dedicated appearance/view entries",
+    "Merged sheet preserves 1920x1080 canvas",
+    "All merged controls acknowledged; blue paint and home camera state correct",
+    "Android back dismisses sheet",
+    "Real pointer orbit returns to the same left-facing home camera after 12s",
+    "Idle return preserves open doors/windows/trunk, lamps, and blue paint",
+    "App sheet keeps full canvas",
+    "App sheet and background/resume work",
+    "No script, shader compilation or Java fatal errors in current process"
+  ],
+  "idle_return_image_mae": 0.0,
+  "orbit_image_mae": 36.8447380065918,
+  "state_before_idle": {
+    "leftDoor": 1,
+    "rightDoor": 1,
+    "windows": 1,
+    "trunk": 1,
+    "lights": true,
+    "color": "#507A9C",
+    "cameraPreset": "home",
+    "cameraRevision": 3,
+    "simulation": true
+  },
+  "state_after_idle": {
+    "leftDoor": 1,
+    "rightDoor": 1,
+    "windows": 1,
+    "trunk": 1,
+    "lights": true,
+    "color": "#507A9C",
+    "cameraPreset": "home",
+    "cameraRevision": 4,
+    "simulation": true
+  },
+  "screenshots": [
+    "fullscreen-final-cold-left.png",
+    "fullscreen-final-merged-controls.png",
+    "fullscreen-idle-home-reference.png",
+    "fullscreen-idle-rear-before.png",
+    "fullscreen-idle-home-returned.png",
+    "fullscreen-final-verified.png"
+  ],
+  "scope": "Full-screen controls, materials, plate removal and shared left-facing camera before the final loading-UI change",
+  "latest_startup_ui": {
+    "compiled_and_installed": true,
+    "page_validation": "left to user as requested"
+  }
+}

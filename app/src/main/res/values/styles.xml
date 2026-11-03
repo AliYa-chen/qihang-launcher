@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Qihang.Base" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">#161718</item>
+        <item name="android:colorAccent">#93D8DD</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:statusBarColor">#161718</item>
+        <item name="android:navigationBarColor">#161718</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
+    <style name="Theme.Qihang" parent="Theme.Qihang.Base" />
+</resources>

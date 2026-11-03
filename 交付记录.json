@@ -1,0 +1,14 @@
+{
+  "version": "0.1.1",
+  "apk_sha256": "079726fb3f049da97efad82e1876b8c87749741ae3286dcad8c74ad948e7ab5c",
+  "source_zip_sha256": "7ec9d606f59dc7bae7692c69315fb51b8bac198b889a510e7e074a8547df34b3",
+  "apk_bytes": 158829391,
+  "source_zip_bytes": 3465695,
+  "latest_changes": [
+    "No upper-left branding/simulation badge",
+    "Clock only at upper-right",
+    "Blurred vehicle loading backdrop with spinner; engine boot logo hidden",
+    "Native fade after first scene frame"
+  ],
+  "page_validation": "User will verify the latest startup UI"
+}

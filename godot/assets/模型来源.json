@@ -1,0 +1,17 @@
+{
+  "source": "Launcher.apk/assets/vehicle_c236_ica2.kzb",
+  "mesh_count": 109,
+  "vertices": 136074,
+  "triangles": 188520,
+  "orientation": "+Z front; +Y up; +X vehicle left",
+  "recovery": "half-float/float vertex buffers and triangle indices decoded; texture shaders replaced by basic PBR families; original animations not retained",
+  "source_units_notes": "most positions in meters; trunk group axes mapped from centimeters X,-Z,Y; alternate wheel textures/duplicate tire meshes and ground planes excluded",
+  "sha256": "520e34163d82ca316704e2a3313c564175e162a0b2d940695e0dc58355a2e212",
+  "recovered_sha256": "bfbf1b2614865c5e76ce7a807d89c71f091626c6f254832c1e13b53fd9b8743a",
+  "cleanup": {
+    "removed_degenerate_triangles": 3555,
+    "removed_same_direction_duplicate_triangles": 2,
+    "positions_normals_uv_and_part_names": "preserved"
+  },
+  "material_revision": "Neutral studio IBL, calibrated warm pearl paint, deep glass and neutral metal; reconstructed C236 materials, not original Kanzi shader/texture migration."
+}

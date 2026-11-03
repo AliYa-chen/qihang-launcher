@@ -1,0 +1,105 @@
+{
+  "source_file": "studio-source.png",
+  "source_sha256": "794beb20c8fb9a136dcedfb08c512b9a2cf893771cc001b8e2c90a57398bd128",
+  "source_url": "https://rescar.2t.hk/vendor/app-resources/shared_misc_textures/New_Studio.png",
+  "source_dimensions": [
+    512,
+    256
+  ],
+  "cube_size": 256,
+  "face_order": [
+    "+X",
+    "-X",
+    "+Y",
+    "-Y",
+    "+Z",
+    "-Z"
+  ],
+  "mip_count": 9,
+  "format": "RGBA8",
+  "encoding": "sRGB values in ordinary UNORM texture",
+  "integration_space": "linear",
+  "samples_per_pixel": 64,
+  "radical_inverse": "UNORM8 quantized reference cache",
+  "roughness_per_mip": "min(1, level / 5)",
+  "diffuse_lod": 4,
+  "specular_lod": "roughness * 6",
+  "radiance_sha256": "ede06f8dc1fa13404cc3c75886b00313c38467cf83f10645e809608f37db73ce",
+  "seconds": 1.43,
+  "reference": "Tesla Desk/src/features/three/teslaAppEnvironmentMap.js (Godot 3.2.2 GLES2 GGX filter)",
+  "render_profile": {
+    "source": "Tesla Desk shared renderer, PARKED desktop settings supplied by host",
+    "environment_energy": 4,
+    "ambient_energy": 4,
+    "ambient_color": "#000000",
+    "ambient_sky_contribution": 1,
+    "rotation_degrees_yxz": [
+      0,
+      -11,
+      83
+    ],
+    "exposure": 1,
+    "tone_mapping": "none",
+    "implementation": "display-space Godot3 GLES2 environment BRDF, rendered through unshaded Godot4 shader",
+    "coordinate_rotation_degrees_yxz": [
+      0,
+      180,
+      0
+    ],
+    "paint_adaptation": {
+      "color": "#232220",
+      "metallic": 0.18,
+      "roughness": 0.4,
+      "diffuse_fill": 0.5,
+      "diffuse_fill_value": 0.5,
+      "look_exposure": 1.8,
+      "look_gamma": 0.85,
+      "highlight_rolloff": 1.0,
+      "note": "C236 material adaptation on the shared IBL; not a claim of pixel-identical Tesla output."
+    }
+  },
+  "apk_verification": {
+    "package": "com.teslamotors.tesla",
+    "version": "4.62.3-4697",
+    "apk_sha256": "945e103fbedff1c116f365ffd561525bdff67cc7defdc13f5fa2d2f3cd09e285",
+    "engine": "3.2.2.stable.custom_build",
+    "driver": "GLES2",
+    "source_entry": "assets/godot/.import/New_Studio.png-b4cb190cf6f42b94dbc5a46aa6db95d0.stex",
+    "restored_png_matches": true
+  },
+  "camera_profile": {
+    "source": "Tesla Desk tablet PARKED pose, camera mechanics verified against supplied Tesla Android APK",
+    "pivot_rotation_degrees_yxz": [
+      85,
+      -140,
+      0
+    ],
+    "camera_local_rotation_degrees": [
+      -90,
+      0,
+      0
+    ],
+    "source_offset": [
+      -0.06,
+      3.5,
+      0
+    ],
+    "design_fov_degrees": 60,
+    "tablet_frame_scale": 0.42,
+    "mapped_orbit_yaw_degrees": -40,
+    "mapped_orbit_pitch_degrees": 5,
+    "effective_fov_degrees": 27.2607941662,
+    "distance": 8.33455773,
+    "target": [
+      0.110218955,
+      0.7598932865,
+      -0.0908924258
+    ],
+    "transition": {
+      "seconds": 0.5,
+      "curve": "QUART",
+      "ease": "OUT"
+    },
+    "adaptation": "Original framing mapped to this vehicle forward axis and body center; full-screen Android canvas replaces the original allocated tablet sub-frame."
+  }
+}
