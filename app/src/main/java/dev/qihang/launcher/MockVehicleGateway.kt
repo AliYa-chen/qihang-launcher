@@ -8,14 +8,14 @@ import java.util.Date
 import java.util.Locale
 
 /** A local simulator. It never connects to vehicle hardware or a remote service. */
-class MockVehicleGateway : VehicleGateway {
+class MockVehicleGateway(initialNightMode: Boolean = false) : VehicleGateway {
     private val handler = Handler(Looper.getMainLooper())
     private val listeners = Collections.synchronizedSet(linkedSetOf<(VehicleState) -> Unit>())
     private val entries = ArrayDeque<String>()
     private val pending = Collections.synchronizedSet(linkedSetOf<String>())
     @Volatile private var closed = false
 
-    @Volatile override var state: VehicleState = VehicleState()
+    @Volatile override var state: VehicleState = VehicleState(nightMode = initialNightMode)
         private set
 
     override val logs: List<String> get() = synchronized(entries) { entries.toList() }
@@ -33,6 +33,18 @@ class MockVehicleGateway : VehicleGateway {
 
     override fun removeListener(listener: (VehicleState) -> Unit) {
         listeners.remove(listener)
+    }
+
+    /** Local Android configuration change; existing vehicle/camera state stays intact. */
+    fun setNightMode(nightMode: Boolean) {
+        if (closed) return
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            handler.post { setNightMode(nightMode) }
+            return
+        }
+        if (state.nightMode == nightMode) return
+        state = state.copy(nightMode = nightMode)
+        publish()
     }
 
     override fun request(action: String) {
@@ -65,7 +77,7 @@ class MockVehicleGateway : VehicleGateway {
                 "camera_home" -> state.copy(cameraPreset = "home", cameraRevision = state.cameraRevision + 1)
                 "camera_front" -> state.copy(cameraPreset = "front", cameraRevision = state.cameraRevision + 1)
                 "camera_side" -> state.copy(cameraPreset = "side", cameraRevision = state.cameraRevision + 1)
-                "reset" -> VehicleState(cameraRevision = state.cameraRevision + 1)
+                "reset" -> VehicleState(cameraRevision = state.cameraRevision + 1, nightMode = state.nightMode)
                 else -> state
             }
             pending.remove(action)

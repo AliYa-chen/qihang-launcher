@@ -1,14 +1,17 @@
 {
-  "version": "0.1.1",
-  "apk_sha256": "079726fb3f049da97efad82e1876b8c87749741ae3286dcad8c74ad948e7ab5c",
-  "source_zip_sha256": "7ec9d606f59dc7bae7692c69315fb51b8bac198b889a510e7e074a8547df34b3",
-  "apk_bytes": 158829391,
-  "source_zip_bytes": 3465695,
-  "latest_changes": [
-    "No upper-left branding/simulation badge",
-    "Clock only at upper-right",
-    "Blurred vehicle loading backdrop with spinner; engine boot logo hidden",
-    "Native fade after first scene frame"
+  "version": "0.1.3",
+  "apk_sha256": "a309a1542596ee6355181b03ffbf4025a8753a9b0923ea702de98f44da2074d4",
+  "apk_bytes": 158003004,
+  "build": "assembleDebug succeeded",
+  "changes": [
+    "Merge desktop and vehicle entry into 首页; long press opens vehicle controls, single tap dismisses sheets",
+    "Remove cross-pipeline Kanzi AO gain from shared Tesla IBL; preserve source environment and paint parameters"
   ],
-  "page_validation": "User will verify the latest startup UI"
+  "headless_checks": "AO binding and standard occlusion strength; paint profiles, mirror layers, day/night and idle return passed",
+  "apk_checks": "Packaged scene/shader/material bytes match source; no ao_gain; 4/4 source environment; arm64-v8a and x86_64",
+  "installed_target": "emulator-5554",
+  "install": "adb install -r succeeded",
+  "page_validation": "User will verify; no app launch, page automation, screenshot or frame-rate measurement performed",
+  "reference": "godot/assets/shared-render-profile.json",
+  "remaining_difference": "Godot4 adaptation using C236 geometry and UV-matched AO, not the full official renderer. Original vehicle-specific surface maps and full engine behavior are not reproduced."
 }

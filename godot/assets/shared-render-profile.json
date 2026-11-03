@@ -1,0 +1,748 @@
+{
+  "schema": 1,
+  "reference": "Tesla Desk public vehicle renderer and supplied Tesla 4.62.3 APK",
+  "source_file_hashes": {
+    "src/features/three/teslaAppRenderProfile.js": "ec1174a9c29f6e12f96cf897dd259323dae803c8c1b00d105f9c33d1288277c8",
+    "src/features/three/teslaAppLighting.js": "f9e467a4a4e9f981dfbdf5596699f086bf7d55de6aceb0dfb3d26202de86253c",
+    "src/features/three/teslaAppMaterialShader.js": "aea72973d932326532a490b4ea60488186837242748a696a217a3acea4888004",
+    "src/features/three/teslaAppEnvironmentMap.js": "7b4f3ebb8ae0d305316cf8379afd8ade3993ac95f3678af10c60da9fe6cfe03b",
+    "src/features/three/teslaAppGroundReflection.js": "a1a84ed042e79932ce3da18b64e7965ef1be67e4ee256238fed623f947990420",
+    "src/features/three/teslaAppBackgroundGlow.js": "06a5090e2a46e1355f3b9ba87762a603efa356ed886648bf1e824bfd873a08a7",
+    "src/features/three/teslaAppRasterizer.js": "d918013c0e0bac0ee964dc930b9a034b7dfaa28fe1fc70c03d752b7cf15b7855",
+    "src/features/tui/tuiParkedScene.js": "62eeb64d22998dea8aebccfd5de221c17aeb775b764d03ed5c210bb5fea0071e",
+    "src/data/tesla-app-scene-presets.json": "0ab3833acb1f82584b9ac00a5bcb45d601d1fe833c3ca3380b555ff1c81ea38b"
+  },
+  "environment": {
+    "environmentEnergy": 4,
+    "ambientEnergy": 4,
+    "rotationDegrees": [
+      0,
+      -11,
+      83
+    ],
+    "ambientColor": "#000000",
+    "ambientSkyContribution": 1,
+    "background": {
+      "day": "#F7F7F7",
+      "night": "#161718"
+    },
+    "exposure": 1,
+    "toneMapping": "none"
+  },
+  "paintProfiles": {
+    "RedMulticoat": {
+      "color": "#0a0101",
+      "metallic": 0.1,
+      "roughness": 0.04
+    },
+    "SolidBlack": {
+      "color": "#0e0e0e",
+      "metallic": 1.0,
+      "roughness": 0.04
+    },
+    "SilverMetallic": {
+      "color": "#161616",
+      "metallic": 0.6,
+      "roughness": 0.04
+    },
+    "MidnightSilver": {
+      "color": "#131416",
+      "metallic": 0.8,
+      "roughness": 0.04
+    },
+    "DeepBlue": {
+      "color": "#000919",
+      "metallic": 0.7,
+      "roughness": 0.04
+    },
+    "PearlWhite": {
+      "color": "#181818",
+      "metallic": 0.25,
+      "roughness": 0.2
+    },
+    "TitaniumCopper": {
+      "color": "#181510",
+      "metallic": 0.8,
+      "roughness": 0.04
+    },
+    "Red": {
+      "color": "#0a0101",
+      "metallic": 0.1,
+      "roughness": 0.04
+    },
+    "Black": {
+      "color": "#0e0e0e",
+      "metallic": 1.0,
+      "roughness": 0.04
+    },
+    "Silver": {
+      "color": "#161616",
+      "metallic": 0.6,
+      "roughness": 0.04
+    },
+    "Grey": {
+      "color": "#131416",
+      "metallic": 0.8,
+      "roughness": 0.04
+    },
+    "SignatureBlue": {
+      "color": "#000206",
+      "metallic": 0.2,
+      "roughness": 0.04
+    },
+    "White": {
+      "color": "#141414",
+      "metallic": 0.2,
+      "roughness": 0.3
+    },
+    "Titanium": {
+      "color": "#181510",
+      "metallic": 0.8,
+      "roughness": 0.04
+    },
+    "Pearl": {
+      "color": "#131313",
+      "metallic": 0.01,
+      "roughness": 0.04
+    },
+    "MetallicBlack": {
+      "color": "#0e0e0e",
+      "metallic": 1.0,
+      "roughness": 0.04
+    },
+    "SteelGrey": {
+      "color": "#131416",
+      "metallic": 0.8,
+      "roughness": 0.04
+    },
+    "Green": {
+      "color": "#060a0a",
+      "metallic": 0.8,
+      "roughness": 0.04
+    },
+    "Brown": {
+      "color": "#181514",
+      "metallic": 0.8,
+      "roughness": 0.04
+    },
+    "SigRed": {
+      "color": "#110305",
+      "metallic": 0.7,
+      "roughness": 0.04
+    },
+    "Blue": {
+      "color": "#000104",
+      "metallic": 0.6,
+      "roughness": 0.04
+    },
+    "MidnightCherryRed": {
+      "color": "#200006",
+      "metallic": 0.8,
+      "roughness": 0.01
+    },
+    "Quicksilver": {
+      "color": "#2b2d35",
+      "metallic": 0.85,
+      "roughness": 0.2
+    },
+    "UltraRed": {
+      "color": "#250006",
+      "metallic": 0.7,
+      "roughness": 0.05
+    },
+    "StealthGrey": {
+      "color": "#121417",
+      "metallic": 0.88,
+      "roughness": 0.1
+    },
+    "LunarSilver": {
+      "color": "#343438",
+      "metallic": 0.898,
+      "roughness": 0.28
+    },
+    "GlacierBlue": {
+      "color": "#12161f",
+      "metallic": 0.7,
+      "roughness": 0.1
+    },
+    "DiamondBlack": {
+      "color": "#040404",
+      "metallic": 0.75,
+      "roughness": 0.02
+    },
+    "FrostBlue": {
+      "color": "#111317",
+      "metallic": 0.716,
+      "roughness": 0.05
+    },
+    "SilkroadSilver": {
+      "color": "#2d2c2d",
+      "metallic": 0.826,
+      "roughness": 0.204
+    },
+    "MarineBlue": {
+      "color": "#01050a",
+      "metallic": 0.85,
+      "roughness": 0.02
+    },
+    "GarnetRed": {
+      "color": "#1d0305",
+      "metallic": 0.8,
+      "roughness": 0.05
+    },
+    "CoastalBlue": {
+      "color": "#040710",
+      "metallic": 0.5,
+      "roughness": 0.04
+    }
+  },
+  "cameraPresets": {
+    "source": "main.jsbundle HBC96 function 29816",
+    "writes": [
+      {
+        "slot": 23,
+        "offset": "0x9d9"
+      },
+      {
+        "slot": 24,
+        "offset": "0xa2a"
+      },
+      {
+        "slot": 25,
+        "offset": "0xa4d"
+      },
+      {
+        "slot": 26,
+        "offset": "0xda6"
+      }
+    ],
+    "base": {
+      "PARKED": {
+        "rotation": [
+          68.6,
+          -138,
+          0
+        ],
+        "offset": [
+          -0.06,
+          6.7,
+          0
+        ],
+        "envRotation": [
+          0,
+          -11,
+          83
+        ],
+        "envEnergy": 6,
+        "ambEnergy": 2.6,
+        "cam_fov": 40,
+        "rotateSkyBox": false
+      },
+      "CHARGING": {
+        "rotation": [
+          74,
+          -38,
+          0
+        ],
+        "offset": [
+          0,
+          6.55,
+          0
+        ],
+        "envRotation": [
+          -20,
+          53,
+          30
+        ],
+        "envEnergy": 5,
+        "ambEnergy": 4,
+        "cam_fov": 40,
+        "rotateSkyBox": false
+      },
+      "DRIVE": {
+        "rotation": [
+          68.6,
+          -138,
+          0
+        ],
+        "offset": [
+          -0.06,
+          8,
+          0
+        ],
+        "envRotation": [
+          0,
+          -11,
+          83
+        ],
+        "envEnergy": 6,
+        "ambEnergy": 2.6,
+        "cam_fov": 40,
+        "rotateSkyBox": false
+      },
+      "DRIVE_REVERSE": {
+        "rotation": [
+          74,
+          -38,
+          0
+        ],
+        "offset": [
+          0,
+          8,
+          0
+        ],
+        "envRotation": [
+          -9,
+          -7,
+          75
+        ],
+        "envEnergy": 5,
+        "ambEnergy": 3,
+        "cam_fov": 40,
+        "rotateSkyBox": false
+      },
+      "TOP_DOWN": {
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "offset": [
+          0,
+          10,
+          0
+        ],
+        "envRotation": [
+          0,
+          -3,
+          87
+        ],
+        "envEnergy": 4.5,
+        "ambEnergy": 4,
+        "cam_fov": 40,
+        "rotateSkyBox": false
+      },
+      "CLIMATE": {
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "offset": [
+          0,
+          6,
+          0.6
+        ],
+        "envRotation": [
+          0,
+          40,
+          0
+        ],
+        "envEnergy": 4,
+        "ambEnergy": 4,
+        "cam_fov": 40,
+        "rotateSkyBox": false
+      },
+      "CAR_WRAP": {
+        "rotation": [
+          84,
+          -142,
+          0
+        ],
+        "offset": [
+          -0.06,
+          6,
+          0
+        ],
+        "envRotation": [
+          0,
+          -11,
+          83
+        ],
+        "envEnergy": 6,
+        "ambEnergy": 2.6,
+        "cam_fov": 43,
+        "rotateSkyBox": false
+      },
+      "ENERGY": {
+        "rotation": [
+          69,
+          0,
+          0
+        ],
+        "offset": [
+          0,
+          12,
+          -0.5
+        ],
+        "envRotation": [
+          0,
+          -45,
+          0
+        ],
+        "envEnergy": 8,
+        "ambEnergy": 4,
+        "cam_fov": 10,
+        "rotateSkyBox": false
+      },
+      "CLOSURE_OPEN": {
+        "rotation": [
+          62.654,
+          -139.64,
+          0
+        ],
+        "offset": [
+          -0.086,
+          4.7,
+          0
+        ],
+        "envRotation": [
+          0,
+          45,
+          0
+        ],
+        "envEnergy": 14,
+        "ambEnergy": 2,
+        "cam_fov": 58,
+        "rotateSkyBox": true
+      },
+      "TENT_MODE": {
+        "rotation": [
+          80,
+          -17,
+          0
+        ],
+        "offset": [
+          0.2,
+          4.5,
+          -0.2
+        ],
+        "envRotation": [
+          0,
+          45,
+          0
+        ],
+        "envEnergy": 14,
+        "ambEnergy": 2,
+        "cam_fov": 56,
+        "rotateSkyBox": true
+      },
+      "VEHICLE_TO_HOME": {
+        "rotation": [
+          74,
+          38.5,
+          0
+        ],
+        "offset": [
+          -0.2,
+          15.5,
+          0
+        ],
+        "envRotation": [
+          -1.5,
+          -25.7,
+          -8
+        ],
+        "cam_fov": 20,
+        "envEnergy": 5,
+        "ambEnergy": 4,
+        "rotateSkyBox": false
+      }
+    },
+    "tabletCameraOverrides": {
+      "PARKED": {
+        "rotation": [
+          85,
+          -140,
+          0
+        ],
+        "offset": [
+          -0.06,
+          3.5,
+          0
+        ],
+        "cam_fov": 60
+      }
+    },
+    "tabletEnvironmentOverrides": {
+      "PARKED": {
+        "envEnergy": 4,
+        "ambEnergy": 4
+      },
+      "DRIVE": {
+        "envEnergy": 4,
+        "ambEnergy": 4
+      },
+      "CAR_WRAP": {
+        "envEnergy": 4,
+        "ambEnergy": 4
+      }
+    },
+    "vehicleOverrides": {
+      "@CARTYPESEMITRUCK": {
+        "PARKED": {
+          "offset": [
+            -0.06,
+            7.5,
+            -0.1
+          ],
+          "envRotation": [
+            0,
+            -7,
+            83
+          ]
+        },
+        "DRIVE": {
+          "offset": [
+            -0.06,
+            7.5,
+            -0.1
+          ],
+          "envRotation": [
+            0,
+            -7,
+            83
+          ]
+        },
+        "CLIMATE": {
+          "offset": [
+            0,
+            7,
+            -0.5
+          ],
+          "envRotation": [
+            0,
+            90,
+            70
+          ],
+          "envEnergy": 6,
+          "ambEnergy": 3.7
+        },
+        "CHARGING": {
+          "rotation": [
+            78,
+            -55,
+            0
+          ],
+          "offset": [
+            0,
+            7,
+            -0.1
+          ],
+          "envRotation": [
+            -20,
+            53,
+            30
+          ],
+          "envEnergy": 5,
+          "ambEnergy": 3.4
+        },
+        "TOP_DOWN": {
+          "offset": [
+            0,
+            11,
+            0.3
+          ],
+          "envRotation": [
+            0,
+            90,
+            70
+          ],
+          "envEnergy": 6,
+          "ambEnergy": 3.7
+        }
+      },
+      "@CARTYPECYBERTRUCK": {
+        "PARKED": {
+          "rotation": [
+            80,
+            -138,
+            -0.15
+          ],
+          "offset": [
+            -0.14,
+            3,
+            0
+          ],
+          "envRotation": [
+            0,
+            45,
+            0
+          ],
+          "envEnergy": 14,
+          "ambEnergy": 2,
+          "cam_fov": 80,
+          "rotateSkyBox": true
+        },
+        "CHARGING": {
+          "offset": [
+            0.1,
+            6.55,
+            -0.15
+          ],
+          "envRotation": [
+            8,
+            60,
+            0
+          ],
+          "envEnergy": 14,
+          "ambEnergy": 2
+        },
+        "DRIVE": {
+          "envRotation": [
+            0,
+            45,
+            -0.05
+          ],
+          "envEnergy": 14,
+          "ambEnergy": 2
+        },
+        "DRIVE_REVERSE": {
+          "offset": [
+            0.1,
+            6.55,
+            -0.05
+          ],
+          "envRotation": [
+            8,
+            60,
+            0
+          ],
+          "envEnergy": 14,
+          "ambEnergy": 2
+        },
+        "TOP_DOWN": {
+          "offset": [
+            0,
+            12,
+            0.22
+          ],
+          "envRotation": [
+            -67,
+            67,
+            -67
+          ],
+          "envEnergy": 16,
+          "ambEnergy": 3
+        },
+        "CLIMATE": {
+          "offset": [
+            0,
+            5.5,
+            -0.2
+          ],
+          "envRotation": [
+            -40,
+            0,
+            0
+          ],
+          "envEnergy": 14,
+          "ambEnergy": 2
+        },
+        "VEHICLE_TO_HOME": {
+          "offset": [
+            -0.4,
+            15.5,
+            0
+          ],
+          "envRotation": [
+            -40,
+            80,
+            -20
+          ],
+          "envEnergy": 14,
+          "ambEnergy": 2
+        }
+      }
+    },
+    "appVersion": "4.62.3-4697",
+    "cameraAnimation": {
+      "duration": 0.5,
+      "transition": "QUART",
+      "ease": "OUT"
+    },
+    "productScale": {
+      "model3": 1,
+      "modely": 0.987,
+      "cybertruck": 0.875,
+      "models": 0.945,
+      "modelx": 0.93,
+      "semi": 0.627
+    },
+    "tabletProductScale": 0.42,
+    "cameraLocalRotation": [
+      -90,
+      0,
+      0
+    ],
+    "near": 0.05,
+    "far": 150,
+    "eulerOrder": "YXZ",
+    "snapshot": {
+      "THREEQUARTER": {
+        "rotation": [
+          -9.554,
+          -132.06,
+          0
+        ],
+        "offset": [
+          -5.592,
+          2,
+          -5.375
+        ],
+        "fov": 20,
+        "width": 900,
+        "height": 500,
+        "environment": {
+          "rotationDegrees": [
+            0,
+            -11,
+            83
+          ],
+          "environmentEnergy": 6,
+          "ambientEnergy": 2.6,
+          "rotateSkyBox": false
+        }
+      }
+    },
+    "snapshotOverrides": {
+      "cybertruck": {
+        "THREEQUARTER": {
+          "environment": {
+            "rotationDegrees": [
+              0,
+              45,
+              0
+            ],
+            "environmentEnergy": 14,
+            "ambientEnergy": 2,
+            "rotateSkyBox": false
+          }
+        }
+      }
+    }
+  },
+  "interaction": {
+    "source": "tuiParkedScene.js / OrbitControls",
+    "dampingFactor": 0.08,
+    "rotateSpeed": 0.48,
+    "frameScheduling": "display VSync, no app 30fps limit"
+  },
+  "C236AO": {
+    "source": "assets/c236/source_material_mapping.json",
+    "channel": 0,
+    "uv": 0,
+    "flipV": true,
+    "sourceKanziAOStrength": 1.6399999856948853,
+    "sourceKanziAOStrengthApplied": false,
+    "strength": 1.0,
+    "equation": "(sample.r - 1.0) * strength + 1.0",
+    "semantics": "Raw UV-matched C236 AO used as standard occlusion in shared Tesla IBL; no Kanzi lighting gain."
+  },
+  "implementation_notes": [
+    "Godot4 Compatibility port; not the Three.js renderer binary or Tesla custom Godot3 build.",
+    "Only matching C236 UV assets are attached; no foreign model AO maps are remapped.",
+    "Removed all prior bespoke paint fill, exposure, gamma, highlight rolloff and procedural ground shadow.",
+    "0.1.3 removes the cross-pipeline Kanzi AO gain from Tesla IBL; original texture bytes and source material properties are preserved."
+  ]
+}

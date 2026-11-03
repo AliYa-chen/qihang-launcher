@@ -1,6 +1,7 @@
 package dev.qihang.launcher
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
@@ -22,15 +23,13 @@ class MainActivity : FragmentActivity(), GodotHost {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setDecorFitsSystemWindows(false)
-        gateway = MockVehicleGateway()
+        gateway = MockVehicleGateway(isNightMode(resources.configuration))
         screen = LauncherScreen(this, gateway)
         screen.sceneContainer.id = 0x1234ABC
         setContentView(screen)
         gateway.addListener { state ->
-            screen.refresh(state)
             vehicleBridge?.publish(state.toJson())
         }
-        screen.refresh(gateway.state)
 
         val existing = supportFragmentManager.findFragmentByTag("godot") as? GodotFragment
         engineFragment = existing ?: GodotFragment().also {
@@ -58,11 +57,19 @@ class MainActivity : FragmentActivity(), GodotHost {
         if (hasFocus) immersive()
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (::gateway.isInitialized) gateway.setNightMode(isNightMode(newConfig))
+    }
+
+    private fun isNightMode(configuration: Configuration): Boolean =
+        (configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
     override fun getActivity(): Activity = this
     override fun getGodot(): Godot? = engineFragment?.godot
 
     override fun getCommandLine(): MutableList<String> = mutableListOf(
-        "--rendering-method", "gl_compatibility", "--max-fps", "30"
+        "--rendering-method", "gl_compatibility"
     )
 
     @Synchronized
@@ -96,7 +103,7 @@ class MainActivity : FragmentActivity(), GodotHost {
     }
 
     private fun handleLauncherBack() {
-        if (::screen.isInitialized && !screen.dismissPanels()) screen.showNotice("已在启航桌面")
+        if (::screen.isInitialized && !screen.dismissPanels()) screen.showNotice("已在首页")
     }
 
     @Deprecated("Android back dispatch is handled locally for the launcher prototype")

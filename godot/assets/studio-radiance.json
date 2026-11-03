@@ -28,7 +28,7 @@
   "seconds": 1.43,
   "reference": "Tesla Desk/src/features/three/teslaAppEnvironmentMap.js (Godot 3.2.2 GLES2 GGX filter)",
   "render_profile": {
-    "source": "Tesla Desk shared renderer, PARKED desktop settings supplied by host",
+    "source": "Tesla Desk shared renderer, tablet PARKED; exact values in shared-render-profile.json",
     "environment_energy": 4,
     "ambient_energy": 4,
     "ambient_color": "#000000",
@@ -46,17 +46,7 @@
       180,
       0
     ],
-    "paint_adaptation": {
-      "color": "#232220",
-      "metallic": 0.18,
-      "roughness": 0.4,
-      "diffuse_fill": 0.5,
-      "diffuse_fill_value": 0.5,
-      "look_exposure": 1.8,
-      "look_gamma": 0.85,
-      "highlight_rolloff": 1.0,
-      "note": "C236 material adaptation on the shared IBL; not a claim of pixel-identical Tesla output."
-    }
+    "materials": "Original named paint profiles; C236 matching-UV original AO; no added paint fill/tone curve"
   },
   "apk_verification": {
     "package": "com.teslamotors.tesla",

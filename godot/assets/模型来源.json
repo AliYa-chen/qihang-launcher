@@ -13,5 +13,5 @@
     "removed_same_direction_duplicate_triangles": 2,
     "positions_normals_uv_and_part_names": "preserved"
   },
-  "material_revision": "Neutral studio IBL, calibrated warm pearl paint, deep glass and neutral metal; reconstructed C236 materials, not original Kanzi shader/texture migration."
+  "material_revision": "Tesla Desk original named paint profiles and IBL branch; restored C236 matching-UV Body AO and original ground-shadow asset. No bespoke paint fill, exposure, gamma or highlight-rolloff."
 }

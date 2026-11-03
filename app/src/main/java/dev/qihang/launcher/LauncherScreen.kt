@@ -12,6 +12,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Gravity
 import android.view.View
+import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.FrameLayout
 import android.widget.GridLayout
 import android.widget.ImageView
@@ -74,7 +75,6 @@ class LauncherScreen(context: Context, private val gateway: VehicleGateway) : Fr
         buildDock()
         addView(dock, LayoutParams(dp(700), dp(68), Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL).apply { bottomMargin = dp(18) })
         addView(notice, LayoutParams(-2, -2, Gravity.TOP or Gravity.CENTER_HORIZONTAL).apply { topMargin = dp(26) })
-        gateway.addListener(stateListener)
         selectNav("home")
     }
 
@@ -131,6 +131,7 @@ class LauncherScreen(context: Context, private val gateway: VehicleGateway) : Fr
     }
 
     fun refresh(state: VehicleState) {
+        clock.setTextColor(if (state.nightMode) ink else Color.rgb(23, 26, 29))
         tiles["toggle_left_door"]?.update(state.leftDoor > .5f, "已打开", "已关闭")
         tiles["toggle_right_door"]?.update(state.rightDoor > .5f, "已打开", "已关闭")
         tiles["toggle_windows"]?.update(state.windows > .5f, "已降下", "已升起")
@@ -168,13 +169,27 @@ class LauncherScreen(context: Context, private val gateway: VehicleGateway) : Fr
         dock.background = shape(glass, 23f, edge)
         dock.elevation = dp(8).toFloat()
         listOf(
-            Triple("home", "桌面", Glyph.HOME), Triple("vehicle", "车控", Glyph.CAR),
+            Triple("home", "首页", Glyph.HOME),
             Triple("apps", "应用", Glyph.APPS), Triple("diagnostics", "诊断", Glyph.DIAGNOSTICS),
         ).forEach { (key, label, glyph) ->
             val item = LinearLayout(context).apply {
                 gravity = Gravity.CENTER; isClickable = true; isFocusable = true; contentDescription = label
                 setPadding(dp(8), 0, dp(8), 0)
                 setOnClickListener { selectNav(if (activePage == key && key != "home") "home" else key) }
+                if (key == "home") {
+                    setOnLongClickListener {
+                        selectNav("vehicle")
+                        true
+                    }
+                    accessibilityDelegate = object : View.AccessibilityDelegate() {
+                        override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfo) {
+                            super.onInitializeAccessibilityNodeInfo(host, info)
+                            info.addAction(AccessibilityNodeInfo.AccessibilityAction(
+                                AccessibilityNodeInfo.ACTION_LONG_CLICK, "打开车控操作面板"
+                            ))
+                        }
+                    }
+                }
             }
             val icon = IconView(context, glyph, muted)
             item.addView(icon, LinearLayout.LayoutParams(dp(22), dp(22)))
@@ -187,7 +202,7 @@ class LauncherScreen(context: Context, private val gateway: VehicleGateway) : Fr
     private fun selectNav(page: String) {
         activePage = page
         navButtons.forEach { (key, views) ->
-            val selected = key == page
+            val selected = key == page || (key == "home" && page == "vehicle")
             views.first.background = shape(if (selected) Color.argb(235, 45, 67, 81) else Color.TRANSPARENT, 15f)
             views.second.iconColor = if (selected) accent else muted
             views.first.isSelected = selected
@@ -355,7 +370,7 @@ class LauncherScreen(context: Context, private val gateway: VehicleGateway) : Fr
     private fun updateDiagnostics() { diagnosticsText?.text = diagnosticsReport() }
 
     private fun diagnosticsReport(): String = buildString {
-        appendLine("启航桌面 / 交互验证版 0.1.1")
+        appendLine("启航桌面 / 交互验证版 0.1.3")
         appendLine("────────────────────────────────")
         appendLine("Android  ${Build.VERSION.RELEASE}  /  API ${Build.VERSION.SDK_INT}")
         appendLine("设备     ${Build.MANUFACTURER} ${Build.MODEL}")

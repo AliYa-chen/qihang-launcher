@@ -2,8 +2,11 @@ extends Node3D
 ## Recovered vehicle geometry with an interaction rig and procedural fallback.
 
 const SharedLighting = preload("res://SharedVehicleLighting.gd")
+const SharedStudio = preload("res://SharedStudio.gd")
 const CAMERA_IDLE_RETURN_SECONDS := 12.0
 const CAMERA_TRANSITION_SECONDS := 0.5
+const ORBIT_DAMPING := 0.08
+const ORBIT_ROTATE_SPEED := 0.48
 # Tesla tablet PARKED: pivot (85,-140,0), local X=-90, offset (-.06,3.5,0),
 # design FOV60 and frame scale .42. Map the forward axis to this vehicle.
 const HOME_YAW := -0.6981317008
@@ -13,7 +16,15 @@ const HOME_FOV := 27.2607941662
 const ORBIT_TARGET := Vector3(0.110218955, 0.7598932865, -0.0908924258)
 
 var studio_lighting
+var studio
+var world_environment: Environment
+var body_ao_texture: Texture2D
+var shared_render_profile: Dictionary = {}
 var studio_materials: Dictionary = {}
+var last_paint_color: String = ""
+var last_lights_enabled: bool = false
+var material_state_initialized: bool = false
+var theme_initialized: bool = false
 var bridge: Object
 var car_root: Node3D
 var left_door: Node3D
@@ -37,7 +48,8 @@ var rear_windows: Array[Node3D] = []
 var trunk_rotation_sign: float = -1.0
 var state: Dictionary = {
 	"leftDoor": 0.0, "rightDoor": 0.0, "windows": 0.0, "trunk": 0.0,
-	"lights": false, "color": "#DCE5E9", "cameraPreset": "home", "simulation": true
+	"lights": false, "color": "#DCE5E9", "cameraPreset": "home", "simulation": true,
+	"nightMode": false
 }
 var current_left: float = 0.0
 var current_right: float = 0.0
@@ -61,14 +73,23 @@ var camera_start_distance: float = HOME_DISTANCE
 var camera_goal_yaw: float = HOME_YAW
 var camera_goal_pitch: float = HOME_PITCH
 var camera_goal_distance: float = HOME_DISTANCE
+var orbit_delta_yaw: float = 0.0
+var orbit_delta_pitch: float = 0.0
 var touch_positions: Dictionary = {}
 var last_pinch_distance: float = 0.0
 var model_source: String = "procedural_demo"
 
 
 func _ready() -> void:
-	Engine.max_fps = 30
+	# Like the source renderer's requestAnimationFrame, follow display VSync.
+	Engine.max_fps = 0
+	shared_render_profile = JSON.parse_string(FileAccess.get_file_as_string("res://assets/shared-render-profile.json"))
 	studio_lighting = SharedLighting.new()
+	var source_environment: Dictionary = shared_render_profile["environment"]
+	var source_rotation: Array = source_environment["rotationDegrees"]
+	studio_lighting.set_environment(float(source_environment["environmentEnergy"]),
+		float(source_environment["ambientEnergy"]), Vector3(source_rotation[0], source_rotation[1], source_rotation[2]))
+	body_ao_texture = _load_data_texture("res://assets/c236/C236_Body_AO.png")
 	_build_materials()
 	_build_studio()
 	car_root = Node3D.new()
@@ -78,6 +99,11 @@ func _ready() -> void:
 	if model_source == "recovered_c236_kzb":
 		studio_lighting.set_coordinate_rotation(Basis(Vector3.UP, PI))
 	_apply_studio_materials(car_root)
+	studio = SharedStudio.new()
+	add_child(studio)
+	studio.initialize(car_root, camera)
+	studio.set_paint_key(str(_paint_profile(paint.albedo_color)["key"]))
+	_apply_theme(bool(state["nightMode"]))
 	if Engine.has_singleton("VehicleBridge"):
 		bridge = Engine.get_singleton("VehicleBridge")
 		# Android plugin methods are dynamically dispatched; has_method() does
@@ -98,10 +124,7 @@ func _notify_ready() -> void:
 
 
 func _build_materials() -> void:
-	paint = _material(Color("#DCE5E9"), 0.18, 0.4)
-	paint.clearcoat_enabled = true
-	paint.clearcoat = 0.85
-	paint.clearcoat_roughness = 0.16
+	paint = _material(Color("#DCE5E9"), 0.25, 0.2)
 	# Neutral glass/metal/wheel response taken directly from the Tesla APK.
 	glass = _material(Color("#010101"), 0.0, 0.2)
 	glass.albedo_color.a = 0.7843137
@@ -126,12 +149,24 @@ func _material(color: Color, metallic: float, roughness: float) -> StandardMater
 	mat.albedo_color = color
 	mat.metallic = metallic
 	mat.roughness = roughness
-	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	mat.cull_mode = BaseMaterial3D.CULL_BACK
 	return mat
+
+
+func _load_data_texture(path: String) -> Texture2D:
+	if not FileAccess.file_exists(path):
+		return null
+	var texture_image := Image.new()
+	if texture_image.load(path) != OK:
+		push_warning("Could not load vehicle texture: " + path)
+		return null
+	texture_image.generate_mipmaps()
+	return ImageTexture.create_from_image(texture_image)
 
 
 func _build_studio() -> void:
 	var environment := Environment.new()
+	world_environment = environment
 	environment.background_mode = Environment.BG_COLOR
 	environment.background_color = Color("#161718")
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
@@ -146,15 +181,6 @@ func _build_studio() -> void:
 	var world := WorldEnvironment.new()
 	world.environment = environment
 	add_child(world)
-	var floor_mat := ShaderMaterial.new()
-	floor_mat.shader = load("res://shaders/studio_floor.gdshader")
-	var floor_mesh := PlaneMesh.new()
-	floor_mesh.size = Vector2(1000, 1000)
-	var floor_instance := MeshInstance3D.new()
-	floor_instance.mesh = floor_mesh
-	floor_instance.material_override = floor_mat
-	floor_instance.position.y = -0.035
-	add_child(floor_instance)
 	camera = Camera3D.new()
 	camera.name = "OrbitCamera"
 	camera.fov = HOME_FOV
@@ -168,24 +194,55 @@ func _build_studio() -> void:
 func _studio_paint_color(color: Color) -> Color:
 	# Tesla Desk's existing source paint profiles are deliberately darker than
 	# UI swatches because its IBL evaluates the original display-space response.
-	match color.to_html(false).to_upper():
-		"DCE5E9", "DCE7EB": return Color("#232220") # Soft warm pearl
-		"507A9C": return Color("#12161F") # GlacierBlue
-		"7B8793", "7E8B98": return Color("#121417") # StealthGrey
+	var key := _paint_key(color)
+	if shared_render_profile.has("paintProfiles"):
+		return Color(str(shared_render_profile["paintProfiles"][key]["color"]))
 	return Color(color.r * 0.325, color.g * 0.325, color.b * 0.325, color.a)
+
+
+func _paint_key(color: Color) -> String:
+	match color.to_html(false).to_upper():
+		"507A9C": return "GlacierBlue"
+		"7B8793", "7E8B98": return "StealthGrey"
+	return "PearlWhite"
+
+
+func _paint_profile(color: Color) -> Dictionary:
+	var key := _paint_key(color)
+	var profile: Dictionary = shared_render_profile["paintProfiles"][key].duplicate()
+	profile["key"] = key
+	return profile
+
+
+func _paint_overrides() -> Dictionary:
+	var profile := _paint_profile(paint.albedo_color)
+	var overrides := {"albedo":_studio_paint_color(paint.albedo_color),
+		"metallic":profile["metallic"], "roughness":profile["roughness"]}
+	if body_ao_texture != null:
+		overrides["ao_texture"] = body_ao_texture
+		overrides["ao_uv2"] = false
+		overrides["ao_channel"] = 0
+		overrides["ao_light_affect"] = 1.0
+		overrides["ao_flip_v"] = true
+		# Keep this UV-matched map as occlusion in the shared Tesla IBL.
+		# Kanzi's 1.64 AO multiplier belongs to its own full paint shader;
+		# applying it here amplifies both lighting terms above unoccluded energy.
+		overrides["ao_strength"] = 1.0
+	return overrides
+
+
+func _apply_theme(night_mode: bool) -> void:
+	world_environment.background_color = Color("#161718") if night_mode else Color("#F7F7F7")
+	if studio != null:
+		studio.set_theme(night_mode)
+	theme_initialized = true
 
 
 func _studio_material(source: BaseMaterial3D) -> ShaderMaterial:
 	if not studio_materials.has(source):
 		var overrides := {}
 		if source == paint:
-			overrides["albedo"] = _studio_paint_color(paint.albedo_color)
-			overrides["pearl"] = true
-			overrides["diffuse_fill"] = 0.5
-			overrides["diffuse_fill_value"] = 0.5
-			overrides["look_exposure"] = 1.8
-			overrides["look_gamma"] = 0.85
-			overrides["highlight_rolloff"] = 1.0
+			overrides = _paint_overrides()
 		else:
 			var color := source.albedo_color
 			# The recovered GLB wrote provisional display swatches as glTF linear
@@ -198,6 +255,8 @@ func _studio_material(source: BaseMaterial3D) -> ShaderMaterial:
 				var value := color.r * 0.2126 + color.g * 0.7152 + color.b * 0.0722
 				color = Color(value, value, value, color.a)
 			overrides["albedo"] = color
+			overrides["cull_mode"] = BaseMaterial3D.CULL_BACK
+			overrides["depth_draw_mode"] = BaseMaterial3D.DEPTH_DRAW_DISABLED if source.transparency != BaseMaterial3D.TRANSPARENCY_DISABLED else BaseMaterial3D.DEPTH_DRAW_OPAQUE_ONLY
 		studio_materials[source] = studio_lighting.create_material(source, overrides)
 	return studio_materials[source]
 
@@ -601,26 +660,45 @@ func apply_state(json: String) -> void:
 	var parsed: Variant = JSON.parse_string(json)
 	if not parsed is Dictionary:
 		return
+	var previous_night_mode := bool(state["nightMode"])
 	for key in state.keys():
 		if parsed.has(key):
 			state[key] = parsed[key]
-	paint.albedo_color = Color(str(state.get("color","#DCE5E9")))
-	studio_lighting.update_color(_studio_material(paint), _studio_paint_color(paint.albedo_color))
-	for lamp in head_lamps:
-		lamp.material_override = _studio_material(lamp_on if bool(state.get("lights",false)) else lamp_off)
-	for lamp in tail_lamps:
-		lamp.material_override = _studio_material(rear_lamp if bool(state.get("lights",false)) else dark_trim)
+	var paint_color := str(state.get("color", "#DCE5E9"))
+	if not material_state_initialized or paint_color != last_paint_color:
+		paint.albedo_color = Color(paint_color)
+		var profile := _paint_profile(paint.albedo_color)
+		paint.metallic = float(profile["metallic"])
+		paint.roughness = float(profile["roughness"])
+		studio_lighting.update_material(_studio_material(paint), paint, _paint_overrides())
+		if studio != null:
+			studio.set_paint_key(str(profile["key"]))
+		last_paint_color = paint_color
+	var lights_enabled := bool(state.get("lights", false))
+	if not material_state_initialized or lights_enabled != last_lights_enabled:
+		for lamp in head_lamps:
+			lamp.material_override = _studio_material(lamp_on if lights_enabled else lamp_off)
+		for lamp in tail_lamps:
+			lamp.material_override = _studio_material(rear_lamp if lights_enabled else dark_trim)
+		last_lights_enabled = lights_enabled
+	material_state_initialized = true
+	if not theme_initialized or previous_night_mode != bool(state["nightMode"]):
+		_apply_theme(bool(state["nightMode"]))
 	var preset := str(state.get("cameraPreset","home"))
 	var camera_revision := int(parsed.get("cameraRevision",last_camera_revision))
 	if preset != last_preset or camera_revision != last_camera_revision:
+		var confirming_idle_return := preset == "home" and last_preset == "home" and camera_transition and not camera_has_user_view
 		last_preset = preset
 		last_camera_revision = camera_revision
-		_set_camera_target(preset)
+		if not confirming_idle_return:
+			_set_camera_target(preset)
 		camera_has_user_view = preset != "home"
 		camera_idle_time = 0.0
 
 
 func _set_camera_target(preset: String) -> void:
+	orbit_delta_yaw = 0.0
+	orbit_delta_pitch = 0.0
 	camera_start_yaw = yaw
 	camera_start_pitch = pitch
 	camera_start_distance = distance
@@ -680,6 +758,23 @@ func _process(delta: float) -> void:
 			distance = camera_goal_distance
 			camera_transition = false
 		_update_camera()
+	elif absf(orbit_delta_yaw) + absf(orbit_delta_pitch) > 0.000001:
+		_advance_orbit(delta)
+	if studio != null:
+		studio.update(delta)
+
+
+func _advance_orbit(_delta: float) -> void:
+	# Match the reference OrbitControls' fixed .08 on both event and frame updates.
+	var damping := ORBIT_DAMPING
+	yaw += orbit_delta_yaw * damping
+	pitch += orbit_delta_pitch * damping
+	orbit_delta_yaw *= 1.0 - damping
+	orbit_delta_pitch *= 1.0 - damping
+	var minimum_height := maxf(0.02, camera.near * 1.1)
+	var minimum_pitch := asin(clampf((minimum_height - ORBIT_TARGET.y) / maxf(distance, 0.001), -1.0, 1.0))
+	pitch = clampf(pitch, minimum_pitch, PI * 0.5 - 0.001)
+	_update_camera()
 
 
 func _update_camera() -> void:
@@ -710,6 +805,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			var separation := _touch_distance()
 			if last_pinch_distance > 0.0 and separation > 1.0:
 				_note_camera_activity()
+				orbit_delta_yaw = 0.0
+				orbit_delta_pitch = 0.0
 				distance = clampf(distance*last_pinch_distance/separation,5.4,11.0)
 				_update_camera()
 			last_pinch_distance = separation
@@ -760,12 +857,12 @@ func _orbit(relative: Vector2) -> void:
 		return
 	_note_camera_activity()
 	drag_distance += relative.length()
-	# Direct manipulation: a feature on the near side follows the horizontal drag.
-	# Normalize by the scene size so touch feels consistent across display densities.
+	# The source OrbitControls normalizes both axes by the canvas height.
 	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
-	yaw += relative.x / maxf(viewport_size.x, 1.0) * TAU * 0.85
-	pitch = clampf(pitch + relative.y / maxf(viewport_size.y, 1.0) * 1.1, 0.08, 0.85)
-	_update_camera()
+	var sensitivity := TAU * ORBIT_ROTATE_SPEED / maxf(viewport_size.y, 1.0)
+	orbit_delta_yaw += relative.x * sensitivity
+	orbit_delta_pitch += relative.y * sensitivity
+	_advance_orbit(1.0 / 60.0)
 
 
 func _pick(screen_position: Vector2) -> void:

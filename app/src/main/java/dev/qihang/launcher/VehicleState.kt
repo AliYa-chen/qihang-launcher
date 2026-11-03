@@ -24,6 +24,7 @@ data class VehicleState(
     val color: String = "#DCE5E9",
     val cameraPreset: String = "home",
     val cameraRevision: Int = 0,
+    val nightMode: Boolean = false,
     val simulation: Boolean = true,
 ) {
     fun toJson(): String = JSONObject().apply {
@@ -35,6 +36,7 @@ data class VehicleState(
         put("color", color)
         put("cameraPreset", cameraPreset)
         put("cameraRevision", cameraRevision)
+        put("nightMode", nightMode)
         put("simulation", simulation)
     }.toString()
 }

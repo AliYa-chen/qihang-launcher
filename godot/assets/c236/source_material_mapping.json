@@ -1,0 +1,197 @@
+{
+  "schema": 1,
+  "source_kzb_sha256": "1a1fbbe9d154676da5a690d25afbb2282c702293c5a68f3cbec293a10f05ee58",
+  "source_material": "/Materials/CarPaint",
+  "source_ao_texture_uri": "kzb://vehicle_c236_ica2/Textures/C236_Body_AO",
+  "source_ao_strength": 1.6399999856948853,
+  "source_shader_ao_equation": "float AO = texture2D(AOTexture, vTexCoord).r * AOStrength;",
+  "source_shader_cavity_equation": "float cavity = smoothstep(0.0,0.2,AO);",
+  "source_ao_light_affect": null,
+  "source_ao_light_affect_note": "No Godot-style ao_light_affect setting exists in recovered Kanzi material. Source shader multiplies ambient/reflection/clearcoat/direct terms by AO (some also cavity). Do not invent a light-affect constant.",
+  "mesh_material_binding_confidence": "CarPaint material reference recovered exactly. Mesh assignment is limited to explicit *_CarPaint family names in source mesh list; full Kanzi prefab material inheritance was not reconstructed.",
+  "per_mesh": {
+    "Body_CarPaint": {
+      "ao_texture": "res://assets/c236/C236_Body_AO.png",
+      "texcoord": 0,
+      "uv_flip_y": true,
+      "source_ao_strength": 1.6399999856948853
+    },
+    "Door_LF_CarPaint": {
+      "ao_texture": "res://assets/c236/C236_Body_AO.png",
+      "texcoord": 0,
+      "uv_flip_y": true,
+      "source_ao_strength": 1.6399999856948853
+    },
+    "Door_LF_SideMirror_CarPaint": {
+      "ao_texture": "res://assets/c236/C236_Body_AO.png",
+      "texcoord": 0,
+      "uv_flip_y": true,
+      "source_ao_strength": 1.6399999856948853
+    },
+    "Door_LR_CarPaint": {
+      "ao_texture": "res://assets/c236/C236_Body_AO.png",
+      "texcoord": 0,
+      "uv_flip_y": true,
+      "source_ao_strength": 1.6399999856948853
+    },
+    "Door_RF_CarPaint": {
+      "ao_texture": "res://assets/c236/C236_Body_AO.png",
+      "texcoord": 0,
+      "uv_flip_y": true,
+      "source_ao_strength": 1.6399999856948853
+    },
+    "Door_RF_SideMirror_CarPaint": {
+      "ao_texture": "res://assets/c236/C236_Body_AO.png",
+      "texcoord": 0,
+      "uv_flip_y": true,
+      "source_ao_strength": 1.6399999856948853
+    },
+    "Door_RR_CarPaint": {
+      "ao_texture": "res://assets/c236/C236_Body_AO.png",
+      "texcoord": 0,
+      "uv_flip_y": true,
+      "source_ao_strength": 1.6399999856948853
+    },
+    "Hood_CarPaint": {
+      "ao_texture": "res://assets/c236/C236_Body_AO.png",
+      "texcoord": 0,
+      "uv_flip_y": true,
+      "source_ao_strength": 1.6399999856948853
+    },
+    "TrunkDoor_CarPaint": {
+      "ao_texture": "res://assets/c236/C236_Body_AO.png",
+      "texcoord": 0,
+      "uv_flip_y": true,
+      "source_ao_strength": 1.6399999856948853
+    }
+  },
+  "uv_evidence": {
+    "source_shader": "vTexCoord = kzTextureCoordinate0;",
+    "trimesh_exporter": "GLB TEXCOORD_0 V=1-sourceV",
+    "hood_source_v_range": [
+      0.66845703125,
+      0.791015625
+    ],
+    "hood_glb_v_range": [
+      0.208984375,
+      0.33154296875
+    ],
+    "decode_png_is_flipped": false
+  },
+  "source_material_properties": {
+    "AOStrength": 1.6399999856948853,
+    "AOTexture": "kzb://vehicle_c236_ica2/Textures/C236_Body_AO",
+    "BlendIntensity": 1.0,
+    "BlendMode": 0,
+    "Emissive": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "EmissiveIntensity": 0.0,
+    "FrameColor0": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "FrameColor1": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "FramePower0": 0.0,
+    "FramePower1": 0.0,
+    "FresnelStrength": 1.0,
+    "MaterialHandler": 1.0,
+    "ModelOpacity": 1.0,
+    "PBR.Albedo": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "PBR.AmbientMatCap": "kzb://vehicle_c236_ica2/Textures/MatCap01",
+    "PBR.AmbientStrength": 0.30000001192092896,
+    "PBR.AmbientTextureColor": [
+      0.7742252945899963,
+      0.7851951718330383,
+      0.8100884556770325,
+      1.0
+    ],
+    "PBR.ClearCoat_Metalness": 0.05000000074505806,
+    "PBR.ClearCoat_Roughness": 0.6700000166893005,
+    "PBR.ClearCoat_Strength": 0.6000000238418579,
+    "PBR.Metalness": 0.4399999976158142,
+    "PBR.ReflectionCubeMap": "kzb://vehicle_c236_ica2/Textures/dayCube-map Texture",
+    "PBR.ReflectionStrength": 0.30000001192092896,
+    "PBR.Roughness": 0.05000000074505806,
+    "PBR.RoughnessAddStrength": 0.6499999761581421,
+    "PBR.RoughnessAddTexture": "kzb://vehicle_c236_ica2/Textures/TrunkDoor_tex8",
+    "RealLightStrength": 0.699999988079071
+  },
+  "files": [
+    {
+      "file": "C236_Body_AO.png",
+      "source_resource": "/Resource Files/Images/C236_Body_AO.png",
+      "source_offset": 4634404,
+      "source_bytes": 262172,
+      "source_payload_sha256": "eb8a342b8fa6b470843c43eecc49e66de9781f772663fa022630f7bfaad41662",
+      "decoded_png_sha256": "a6730cafcf940300a2fb921c57f0bb0cc8f601cbee28d43521d2ac714d3bc982",
+      "width": 1024,
+      "height": 1024,
+      "kanzi_texture_format_id": 65,
+      "decoded_as": "ASTC 8x8",
+      "pixels": "RGBA unchanged; no levels, blur, colorization, flip or sharpening"
+    },
+    {
+      "file": "Ground_Shadow.png",
+      "source_resource": "/Resource Files/Images/Ground_Shadow.png",
+      "source_offset": 5968888,
+      "source_bytes": 524316,
+      "source_payload_sha256": "2a371c9d7533e4dfd92ada52e5ea675253d618dbe1ee8cbb025882f4cca7b625",
+      "decoded_png_sha256": "a1f62b007d1ff7a27c7014a2bd764c21bac2c5ef5f5d25790e74e010c4df62fb",
+      "width": 1024,
+      "height": 2048,
+      "kanzi_texture_format_id": 65,
+      "decoded_as": "ASTC 8x8",
+      "pixels": "RGBA unchanged; no levels, blur, colorization, flip or sharpening"
+    },
+    {
+      "file": "MatCap01.png",
+      "source_resource": "/Resource Files/Images/MatCap01.png",
+      "source_offset": 7541808,
+      "source_bytes": 65564,
+      "source_payload_sha256": "bf119c77c999bbba017a41068ac5badffc020b1bedfc3081e2dfe5e324a4176b",
+      "decoded_png_sha256": "8f3cd12e2796811e66dd6fe8df8563f4ec6065daebdf9bcd90263e36d4411dde",
+      "width": 256,
+      "height": 256,
+      "kanzi_texture_format_id": 51,
+      "decoded_as": "ASTC 4x4",
+      "pixels": "RGBA unchanged; no levels, blur, colorization, flip or sharpening"
+    },
+    {
+      "file": "TrunkDoor_tex8.png",
+      "source_resource": "/Resource Files/Images/TrunkDoor_tex8.png",
+      "source_offset": 9846780,
+      "source_bytes": 467884,
+      "source_payload_sha256": "b65e18ade107bbaf3b1e5367198dbc54b6b94519d2de0cb5fc2e93f90b6b314b",
+      "decoded_png_sha256": "8430ae27942e41567dca84312eeb271f88ec12684bc2e8a8eb9c01c34919c469",
+      "width": 1024,
+      "height": 1024,
+      "kanzi_texture_format_id": 59,
+      "decoded_as": "ASTC 6x6",
+      "pixels": "RGBA unchanged; no levels, blur, colorization, flip or sharpening"
+    }
+  ],
+  "normal_map": null,
+  "metallic_roughness_map": null,
+  "notes": [
+    "Source normal/roughness/metallic/ORM texture files were not found by those names in this Launcher KZB.",
+    "PBR.RoughnessAddTexture references TrunkDoor_tex8; source function uses its green channel for clearcoat roughness. This is not a genericglTF ORM texture.",
+    "Wheel texture wheel_0708 belongs to omitted *_Tex alternative wheel meshes; do not apply it to current detailed rim UVs.",
+    "No Tesla UV-specific map is used."
+  ]
+}
